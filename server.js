@@ -1,5 +1,8 @@
-import { config } from "dotenv";
+import dotenv from "dotenv";
+
 import app from "./app.js";
+import connectDB from "./db/database.js";
+import config from "./config/index.js";
 
 const port = process.env.PORT || 5000;
 
@@ -10,11 +13,14 @@ process.on("uncaughtException", (err) => {
 });
 
 // config
-if (process.env.NODE_ENV !== "PRODUCTION") {
-  config({
+if (config.env !== "PRODUCTION") {
+  dotenv.config({
     path: "/pixel-tech-backend/.env",
   });
 }
+
+// connect db
+connectDB();
 
 const server = app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
